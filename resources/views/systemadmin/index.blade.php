@@ -387,7 +387,7 @@
      @section('scripts')
             <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
             <script>
-            var canvasP = document.getElementById('myChart');
+
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
@@ -406,7 +406,7 @@
                             'rgba(234, 255, 81, 0.2)',
                             'rgba(15, 88, 13, 0.2)',
                             'rgba(0, 37, 224, 0.2)',
-                            'rgba(122, 75, 5, 0.2)',
+                            'rgba(122, 75, 5, 0.2)'
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
@@ -418,36 +418,22 @@
                             'rgba(234, 255, 81, 1)',
                             'rgba(15, 88, 13, 1)',
                             'rgba(0, 37, 224, 1)',
-                            'rgba(122, 75, 5, 1)',
+                            'rgba(122, 75, 5, 1)'
                         ],
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    scales: {
-                         yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                                    }
-                                }]
-                            }
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            precision:0,
+                            beginAtZero: true,
+                        }
+                    }]
                 }
+            }
             });
-    
-            // canvasP.onclick = function(e) {
-            //     var slice = myChart.getElementAtEvent(e);
-            //     if (!slice.length) return; // return if not clicked on slice
-            //     var label = slice[0]._model.label;
-            //     switch (label) {
-            //         // add case for each label/slice
-            //         case 'English Studies':
-            //             alert('clicked on slice 5');
-            //             window.open('http://softeng.test/departments/englishstudies');
-            //             break;
-                   
-            //         // add rests ...
-            //     }
-            // }
             </script>
             <script>
             var ctx = document.getElementById('pieChart');

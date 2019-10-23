@@ -69,7 +69,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'rank_id', 'role_id', 'is_active'
+        'name', 'email', 'password', 'username', 'rank_id', 'role_id', 'is_active', 'photo_id'
     ];
 
     /**
@@ -89,6 +89,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function photo() {
+
+        return $this->belongsTo('App\Photo');
+
+    }
 
     public function role() {
 

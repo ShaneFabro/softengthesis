@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Photo;
 use Carbon\Carbon;
 use App\PersonalParticular;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateFacultyMemberRequest;
 use App\Http\Requests\UpdateFacultyMemberRequest;
-use Illuminate\Support\Facades\Hash;
 
 class FacultyMemberController extends Controller
 {
@@ -106,9 +107,14 @@ class FacultyMemberController extends Controller
         $data['age'] = Carbon::parse($request->get('birth'))->diff(Carbon::now())->format('%y');
 
         if($request->hasFile('image')){
-            Storage::delete($user->image);
-            $image = $request->image->store('particulars');
-            $data['image'] = $image;
+
+            $name = time() . $request->file('image')->getClientOriginalName();
+
+            $request->file('image')->move('images', $name);
+
+            $photo = Photo::create(['file'=>$name]);
+
+            auth()->user()->update(['photo_id' => $photo->id]);
         }
 
         $user->personalParticular()->create($data);
@@ -173,10 +179,17 @@ class FacultyMemberController extends Controller
         $data = $request->all();
         
         if($request->hasFile('image')){
-            $image = $request->image->store('particulars');
-            Storage::delete($user->image);
-            $data['image'] = $image;
-        } 
+
+            unlink(public_path() . '/images/' . auth()->user()->photo->file);
+
+            $name = time() . $request->file('image')->getClientOriginalName();
+
+            $request->file('image')->move('images', $name);
+
+            $photo = Photo::create(['file'=>$name]);
+
+            auth()->user()->update(['photo_id' => $photo->id]);
+        }
 
         $data['fullname'] = $request->get('lastname') . ', ' . $request->get('firstname');
 

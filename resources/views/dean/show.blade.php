@@ -405,6 +405,7 @@
                     scales: {
                          yAxes: [{
                             ticks: {
+                                precision:0,
                                 beginAtZero: true
                                     }
                                 }]

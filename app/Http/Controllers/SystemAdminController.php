@@ -285,7 +285,8 @@ class SystemAdminController extends Controller
 
         if($user->trashed()){
 
-            Storage::delete($user->image);
+            unlink(public_path() . '/images/' . $user->photo->file);
+            
             $user->forceDelete();
 
             session()->flash('success', 'User had been permanently deleted.');

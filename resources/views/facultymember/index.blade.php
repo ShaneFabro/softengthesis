@@ -377,7 +377,7 @@
                                 <strong>Names and Ages of Children:</strong> {{ $user->names_ages_of_children == null ? 'Not Applicable' : $user->names_ages_of_children }}
                             </div>
                             <div class="col-md-3 col-md-offset-2">
-                                <img src="{{ $user->image ? asset('storage/' . $user->image) : 'https://via.placeholder.com/430x400' }}" alt="" width="430" height="400">
+                                <img src="{{ auth()->user()->photo_id != null ? asset('images/' . auth()->user()->photo->file) : 'https://via.placeholder.com/430x400' }}" alt="" width="430" height="400">
                             </div>
                         </div>
                         @else

@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('role_id')->index()->unsigned()->default(0)->nullable();
             $table->integer('rank_id')->index()->unsigned()->default(0)->nullable();
+            $table->integer('photo_id')->unsigned()->nullable();
             $table->integer('is_active')->default(0)->unsigned();
             $table->string('name')->nullable();
             $table->string('username');

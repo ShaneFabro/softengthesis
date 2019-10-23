@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Photo;
 use Carbon\Carbon;
 use App\PresentAcademic;
 use App\PersonalParticular;
@@ -119,9 +120,14 @@ class DeanController extends Controller
         $data['age'] = Carbon::parse($request->get('birth'))->diff(Carbon::now())->format('%y');
 
         if($request->hasFile('image')){
-            Storage::delete($user->image);
-            $image = $request->image->store('particulars');
-            $data['image'] = $image;
+
+            $name = time() . $request->file('image')->getClientOriginalName();
+
+            $request->file('image')->move('images', $name);
+
+            $photo = Photo::create(['file'=>$name]);
+
+            auth()->user()->update(['photo_id' => $photo->id]);
         }
 
         $user->personalParticular()->create($data);
@@ -558,10 +564,17 @@ class DeanController extends Controller
         $data['age'] = Carbon::parse($request->get('birth'))->diff(Carbon::now())->format('%y');
         
         if($request->hasFile('image')){
-            $image = $request->image->store('particulars');
-            Storage::delete($user->image);
-            $data['image'] = $image;
-        } 
+
+            unlink(public_path() . '/images/' . auth()->user()->photo->file);
+
+            $name = time() . $request->file('image')->getClientOriginalName();
+
+            $request->file('image')->move('images', $name);
+
+            $photo = Photo::create(['file'=>$name]);
+
+            auth()->user()->update(['photo_id' => $photo->id]);
+        }
 
         PersonalParticular::where('user_id', $id)->first()->update($data);
 
